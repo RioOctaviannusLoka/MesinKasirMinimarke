@@ -18,7 +18,7 @@ public class Transaksi {
     private JTable table_transaksi;
     public JButton btn_logout;
     public JButton btn_produk;
-    private JFrame frame;
+    public JFrame frame;
 
     public Transaksi(){
         frame = new JFrame("Transaksi");
