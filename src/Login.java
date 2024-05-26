@@ -49,6 +49,8 @@ public class Login {
                         Transaksi transaction = new Transaksi();
                         transaction.frame.setVisible(true);
                         Login.frame.setVisible(false);
+                        transaction.btn_logout.setEnabled(true);
+                        transaction.btn_produk.setEnabled(true);
                     }
                 } catch (Exception e){
                     JOptionPane.showMessageDialog(null, e.getMessage());
