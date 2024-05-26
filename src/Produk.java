@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
@@ -15,7 +17,7 @@ public class Produk {
     public JButton btn_logout;
     private JTextField text_harga_produk;
     private JTextField text_jumlah_diskon;
-    private JFrame frame;
+    private static JFrame frame;
 
     public Produk(){
         frame = new JFrame("Menu Produk");
@@ -29,5 +31,13 @@ public class Produk {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+        btn_logout.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Login login = new Login();
+                login.frame.setVisible(true);
+                Produk.frame.setVisible(false);
+            }
+        });
     }
 }

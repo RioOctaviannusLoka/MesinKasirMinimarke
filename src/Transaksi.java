@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
@@ -18,7 +20,7 @@ public class Transaksi {
     private JLabel teks_jumlah_diskon;
     private JLabel text_total_harga;
     private JLabel text_total_transaksi;
-    public JFrame frame;
+    public static JFrame frame;
 
     public Transaksi(){
         frame = new JFrame("Transaksi");
@@ -32,5 +34,14 @@ public class Transaksi {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+
+        btn_logout.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Login login = new Login();
+                login.frame.setVisible(true);
+                Transaksi.frame.setVisible(false);
+            }
+        });
     }
 }

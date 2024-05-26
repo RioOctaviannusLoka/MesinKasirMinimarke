@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
@@ -14,12 +15,12 @@ public class Login {
     private JButton btn_login;
     private JButton btn_signup;
     private JPanel panelForm;
-    private static JFrame frame;
+    public static JFrame frame;
 
-    // Logic
-    private PreparedStatement stat;
+    // Database connection
+    private PreparedStatement ps;
     private ResultSet rs;
-    koneksi k = new koneksi();
+    koneksi conn = new koneksi();
 
     public Login() {
         frame = new JFrame("Login");
@@ -34,26 +35,40 @@ public class Login {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
-        k.connect();
+        conn.connect();
         btn_login.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
                 user u = new user();
-                try{
-                    Login.this.stat = k.getCon().prepareStatement("SELECT * FROM users WHERE " +
+                try {
+                    Login.this.ps = conn.getCon().prepareStatement("SELECT * FROM users WHERE " +
                             "username = ? AND password = ?;");
-                    Login.this.stat.setString(1, u.username);
-                    Login.this.stat.setString(2, u.password);
-                    Login.this.rs = Login.this.stat.executeQuery();
+                    Login.this.ps.setString(1, u.username);
+                    Login.this.ps.setString(2, u.password);
+                    Login.this.rs = Login.this.ps.executeQuery();
                     if (rs.next()) {
                         Transaksi transaction = new Transaksi();
                         transaction.frame.setVisible(true);
                         Login.frame.setVisible(false);
                         transaction.btn_logout.setEnabled(true);
                         transaction.btn_produk.setEnabled(true);
+                    } else{
+                        JOptionPane.showMessageDialog(null, "Username atau Password salah. Akun tidak ditemukan.");
                     }
                 } catch (Exception e){
                     JOptionPane.showMessageDialog(null, e.getMessage());
+                } finally {
+                    if (rs != null) {
+                        try {
+                            rs.close();
+                        } catch (SQLException e) { /* Ignored */}
+                    }
+                    if (ps != null) {
+                        try {
+                            ps.close();
+                        } catch (SQLException e) { /* Ignored */}
+                    }
+                    conn.close();
                 }
             }
         });
