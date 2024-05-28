@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.security.MessageDigest;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -41,37 +42,69 @@ public class Login {
             public void actionPerformed(ActionEvent evt) {
                 user u = new user();
                 try {
-                    Login.this.ps = conn.getCon().prepareStatement("SELECT * FROM users WHERE " +
-                            "username = ? AND password = ?;");
+                    Login.this.ps = conn.getCon().prepareStatement("SELECT password FROM users WHERE " +
+                            "username = ?;");
                     Login.this.ps.setString(1, u.username);
-                    Login.this.ps.setString(2, u.password);
                     Login.this.rs = Login.this.ps.executeQuery();
                     if (rs.next()) {
-                        Transaksi transaction = new Transaksi();
-                        transaction.frame.setVisible(true);
-                        Login.frame.setVisible(false);
-                        transaction.btn_logout.setEnabled(true);
-                        transaction.btn_produk.setEnabled(true);
+                        String password =  rs.getString("password");
+                        String hashedPassword = PasswordHash(u.password);
+
+                        if (password.equals(hashedPassword)){
+                            Transaksi transaction = new Transaksi();
+                            transaction.frame.setVisible(true);
+                            Login.frame.setVisible(false);
+                            transaction.btn_logout.setEnabled(true);
+                            transaction.btn_produk.setEnabled(true);
+
+                            // Close Database Connection
+                            if (rs != null) {
+                                try {
+                                    rs.close();
+                                } catch (SQLException e) { /* Ignored */}
+                            }
+                            if (ps != null) {
+                                try {
+                                    ps.close();
+                                } catch (SQLException e) { /* Ignored */}
+                            }
+                            conn.close();
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Password Salah. Silahkan masukkan password yang benar.");
+                        }
                     } else{
-                        JOptionPane.showMessageDialog(null, "Username atau Password salah. Akun tidak ditemukan.");
+                        JOptionPane.showMessageDialog(null, "Username salah. Akun tidak ditemukan.");
                     }
                 } catch (Exception e){
                     JOptionPane.showMessageDialog(null, e.getMessage());
-                } finally {
-                    if (rs != null) {
-                        try {
-                            rs.close();
-                        } catch (SQLException e) { /* Ignored */}
-                    }
-                    if (ps != null) {
-                        try {
-                            ps.close();
-                        } catch (SQLException e) { /* Ignored */}
-                    }
-                    conn.close();
                 }
             }
         });
+        btn_signup.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                SignUp signup = new SignUp();
+                signup.frame.setVisible(true);
+                Login.frame.setVisible(false);
+            }
+        });
+    }
+
+    // Password Hashing
+    public static String PasswordHash(String password) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA");
+            md.update(password.getBytes());
+            byte[] rbt = md.digest();
+            StringBuilder sb = new StringBuilder();
+
+            for(byte b: rbt) {
+                sb.append(String.format("%02x", b));
+            }
+            return sb.toString();
+        } catch (Exception e) {
+        }
+        return null;
     }
 
     class user {

@@ -4,7 +4,5 @@ public class Main {
 //        new Transaksi();
 //        new Produk();
         new Login();
-//        koneksi k = new koneksi();
-//        k.connect();
     }
 }
