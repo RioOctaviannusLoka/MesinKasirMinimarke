@@ -195,17 +195,6 @@
           <grid row="4" column="6" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
       </hspacer>
-      <component id="2fa98" class="javax.swing.JTable" binding="table_produk">
-        <constraints>
-          <grid row="10" column="1" row-span="1" col-span="4" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
-            <preferred-size width="150" height="150"/>
-          </grid>
-        </constraints>
-        <properties>
-          <fillsViewportHeight value="false"/>
-          <font name="Berlin Sans FB" style="0"/>
-        </properties>
-      </component>
       <component id="eeacb" class="javax.swing.JButton" binding="btn_logout">
         <constraints>
           <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
@@ -222,6 +211,29 @@
           <grid row="11" column="2" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
         </constraints>
       </vspacer>
+      <scrollpane id="eba86" binding="scrollPane">
+        <constraints>
+          <grid row="10" column="1" row-span="1" col-span="4" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <scrollpane id="19cdd">
+            <constraints/>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="2fa98" class="javax.swing.JTable" binding="table_produk">
+                <constraints/>
+                <properties>
+                  <fillsViewportHeight value="false"/>
+                  <font name="Berlin Sans FB" style="0"/>
+                </properties>
+              </component>
+            </children>
+          </scrollpane>
+        </children>
+      </scrollpane>
     </children>
   </grid>
 </form>

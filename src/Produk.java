@@ -1,3 +1,4 @@
+// TODO: Tambahkan foreign_key untuk id_user
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -19,6 +20,7 @@ public class Produk {
     public JButton btn_logout;
     private JTextField text_harga_produk;
     private JTextField text_jumlah_diskon;
+    private JScrollPane scrollPane;
     public static JFrame frame;
 
     private DefaultTableModel model = null;
@@ -33,18 +35,18 @@ public class Produk {
         frame.setPreferredSize(new Dimension(1000, 600));
         frame.setResizable(false);
 
-        //now add the panel
         frame.add(panelProduk);
 
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
+        // Initialize table model and JTable
+        initializeTable();
+
         // Adding RefreshTable dan DB Connection to GUI Component
-//        initComponents();
         conn.connect();
         refreshTable();
-        // TODO: Tambahkan Error Handling ketika user input text
 
         btn_logout.addActionListener(new ActionListener() {
             @Override
@@ -60,6 +62,8 @@ public class Produk {
                 Transaksi transaksi = new Transaksi();
                 transaksi.frame.setVisible(true);
                 Produk.frame.setVisible(false);
+                transaksi.btn_logout.setEnabled(true);
+                transaksi.btn_produk.setEnabled(true);
             }
         });
         btn_tambah.addActionListener(new ActionListener() {
@@ -75,6 +79,8 @@ public class Produk {
                     ps.setLong(4, products.discount);
                     ps.executeUpdate();
                     refreshTable();
+                } catch(NumberFormatException e){
+                    JOptionPane.showMessageDialog(null, "Harga dan Jumlah Diskon harus berupa angka.");
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, e.getMessage());
                 }
@@ -107,6 +113,10 @@ public class Produk {
                     ps.setInt(4, Integer.parseInt(text_id_produk.getText()));
                     ps.executeUpdate();
                     refreshTable();
+                    btn_perbarui.setEnabled(false);
+                    btn_hapus.setEnabled(false);
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "Harga dan jumlah diskon harus berupa angka.");
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, e.getMessage());
                 }
@@ -120,6 +130,8 @@ public class Produk {
                     ps.setInt(1, Integer.parseInt(text_id_produk.getText()));
                     ps.executeUpdate();
                     refreshTable();
+                    btn_perbarui.setEnabled(false);
+                    btn_hapus.setEnabled(false);
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, e.getMessage());
                 }
@@ -139,15 +151,18 @@ public class Produk {
         }
     }
 
-    public void refreshTable() {
-        // TODO: Tambah table headers
+    private void initializeTable() {
         model = new DefaultTableModel();
         model.addColumn("ID Produk");
         model.addColumn("Nama Produk");
         model.addColumn("Harga");
         model.addColumn("Jumlah Diskon");
-//        model.addRow(new String[]{"ID Produk", "Nama Produk", "Harga", "Jumlah Diskon"});
         table_produk.setModel(model);
+    }
+
+    public void refreshTable() {
+        // Clear table before refreshing
+        model.setRowCount(0);
         try {
             this.ps = conn.getCon().prepareStatement("SELECT * FROM products;");
             this.rs = this.ps.executeQuery();
