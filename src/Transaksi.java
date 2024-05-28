@@ -43,5 +43,16 @@ public class Transaksi {
                 Transaksi.frame.setVisible(false);
             }
         });
+        btn_produk.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Produk produk = new Produk();
+                produk.frame.setVisible(true);
+                Transaksi.frame.setVisible(false);
+                produk.btn_transaksi.setEnabled(true);
+                produk.btn_logout.setEnabled(true);
+                produk.btn_tambah.setEnabled(true);
+            }
+        });
     }
 }

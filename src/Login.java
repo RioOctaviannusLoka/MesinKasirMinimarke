@@ -18,7 +18,9 @@ public class Login {
     private JPanel panelForm;
     public static JFrame frame;
 
-    // Database connection
+    // Database Connection
+    // PreparedStatement prevents SQL Injection because PreparedStatement ensure that user input is treated as data
+    // and not executable code, thereby preventing SQL injection attacks.
     private PreparedStatement ps;
     private ResultSet rs;
     koneksi conn = new koneksi();

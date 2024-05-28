@@ -24,5 +24,7 @@ public class Pembayaran {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+
+        // TODO: Tambah tanggal di DB
     }
 }
