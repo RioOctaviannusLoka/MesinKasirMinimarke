@@ -30,17 +30,6 @@
           <text value="Nama Produk"/>
         </properties>
       </component>
-      <component id="e29ef" class="javax.swing.JTextField" binding="text_id_produk">
-        <constraints>
-          <grid row="3" column="2" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-            <preferred-size width="305" height="30"/>
-          </grid>
-        </constraints>
-        <properties>
-          <enabled value="false"/>
-          <font name="Berlin Sans FB" size="20" style="0"/>
-        </properties>
-      </component>
       <component id="edf1b" class="javax.swing.JTextField" binding="text_nama_produk">
         <constraints>
           <grid row="4" column="2" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
@@ -234,6 +223,15 @@
           </scrollpane>
         </children>
       </scrollpane>
+      <component id="f0df1" class="javax.swing.JLabel" binding="text_id_produk">
+        <constraints>
+          <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="Berlin Sans FB" size="20" style="0"/>
+          <text value=""/>
+        </properties>
+      </component>
     </children>
   </grid>
 </form>

@@ -1,5 +1,3 @@
-// TODO: diskon lebih kecil dari jlh harga
-// TODO: ubah id produk jadi JLabel
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -10,7 +8,7 @@ import java.sql.ResultSet;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 public class Produk {
-    private JTextField text_id_produk;
+    private JLabel text_id_produk;
     private JTextField text_nama_produk;
     public JButton btn_tambah;
     public JButton btn_perbarui;
@@ -70,23 +68,29 @@ public class Produk {
         btn_tambah.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                try {
-                    Products products = new Products();
-                    Login.frame.setVisible(false);
-                    System.out.println(Login.GetIdUser());
-                    Produk.this.ps = conn.getCon().prepareStatement("INSERT INTO products VALUES "+
-                            "(?, ?, ?, ?, ?);");
-                    ps.setInt(1, 0);
-                    ps.setString(2, products.product_name);
-                    ps.setLong(3, products.product_price);
-                    ps.setLong(4, products.discount);
-                    ps.setInt(5, Login.GetIdUser());
-                    ps.executeUpdate();
-                    refreshTable();
-                } catch(NumberFormatException e){
-                    JOptionPane.showMessageDialog(null, "Harga dan Jumlah Diskon harus berupa angka.");
-                } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, e.getMessage());
+                Products products = new Products();
+                if (products.product_price > products.discount) {
+                    if(products.discount <= (products.product_price * 0.5)) {
+                        try {
+                            Produk.this.ps = conn.getCon().prepareStatement("INSERT INTO products VALUES " +
+                                    "(?, ?, ?, ?, ?);");
+                            ps.setInt(1, 0);
+                            ps.setString(2, products.product_name);
+                            ps.setLong(3, products.product_price);
+                            ps.setLong(4, products.discount);
+                            ps.setInt(5, Login.GetIdUser());
+                            ps.executeUpdate();
+                            refreshTable();
+                        } catch (NumberFormatException e) {
+                            JOptionPane.showMessageDialog(null, "Harga dan Jumlah Diskon harus berupa angka.");
+                        } catch (Exception e) {
+                            JOptionPane.showMessageDialog(null, e.getMessage());
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Diskon tidak boleh lebih besar dari 50% harga produk");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Harga harus lebih besar dari diskon");
                 }
             }
         });
@@ -107,24 +111,32 @@ public class Produk {
         btn_perbarui.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                try {
-                    Products products = new Products();
-                    Login.frame.setVisible(false);
-                    Produk.this.ps = conn.getCon().prepareStatement("UPDATE products SET product_name = ?, "
-                    + "product_price = ?, discount = ?, id_user = ? WHERE id_product = ?;");
-                    ps.setString(1, products.product_name);
-                    ps.setLong(2, products.product_price);
-                    ps.setLong(3, products.discount);
-                    ps.setInt(4, Login.GetIdUser());
-                    ps.setInt(5, Integer.parseInt(text_id_produk.getText()));
-                    ps.executeUpdate();
-                    refreshTable();
-                    btn_perbarui.setEnabled(false);
-                    btn_hapus.setEnabled(false);
-                } catch (NumberFormatException e) {
-                    JOptionPane.showMessageDialog(null, "Harga dan jumlah diskon harus berupa angka.");
-                } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, e.getMessage());
+                Products products = new Products();
+                if (products.product_price > products.discount) {
+                    if(products.discount <= (products.product_price * 0.5)) {
+                        try {
+                            Login.frame.setVisible(false);
+                            Produk.this.ps = conn.getCon().prepareStatement("UPDATE products SET product_name = ?, "
+                            + "product_price = ?, discount = ?, id_user = ? WHERE id_product = ?;");
+                            ps.setString(1, products.product_name);
+                            ps.setLong(2, products.product_price);
+                            ps.setLong(3, products.discount);
+                            ps.setInt(4, Login.GetIdUser());
+                            ps.setInt(5, Integer.parseInt(text_id_produk.getText()));
+                            ps.executeUpdate();
+                            refreshTable();
+                            btn_perbarui.setEnabled(false);
+                            btn_hapus.setEnabled(false);
+                        } catch (NumberFormatException e) {
+                            JOptionPane.showMessageDialog(null, "Harga dan jumlah diskon harus berupa angka.");
+                        } catch (Exception e) {
+                            JOptionPane.showMessageDialog(null, e.getMessage());
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Diskon tidak boleh lebih besar dari 50% harga produk");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Harga harus lebih besar dari diskon");
                 }
             }
         });
