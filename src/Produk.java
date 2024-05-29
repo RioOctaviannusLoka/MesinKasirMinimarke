@@ -1,4 +1,5 @@
-// TODO: Tambahkan foreign_key untuk id_user
+// TODO: diskon lebih kecil dari jlh harga
+// TODO: ubah id produk jadi JLabel
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -71,12 +72,15 @@ public class Produk {
             public void actionPerformed(ActionEvent evt) {
                 try {
                     Products products = new Products();
+                    Login.frame.setVisible(false);
+                    System.out.println(Login.GetIdUser());
                     Produk.this.ps = conn.getCon().prepareStatement("INSERT INTO products VALUES "+
-                            "(?, ?, ?, ?);");
+                            "(?, ?, ?, ?, ?);");
                     ps.setInt(1, 0);
                     ps.setString(2, products.product_name);
                     ps.setLong(3, products.product_price);
                     ps.setLong(4, products.discount);
+                    ps.setInt(5, Login.GetIdUser());
                     ps.executeUpdate();
                     refreshTable();
                 } catch(NumberFormatException e){
@@ -105,12 +109,14 @@ public class Produk {
             public void actionPerformed(ActionEvent evt) {
                 try {
                     Products products = new Products();
+                    Login.frame.setVisible(false);
                     Produk.this.ps = conn.getCon().prepareStatement("UPDATE products SET product_name = ?, "
-                    + "product_price = ?, discount = ? WHERE id_product = ?;");
+                    + "product_price = ?, discount = ?, id_user = ? WHERE id_product = ?;");
                     ps.setString(1, products.product_name);
                     ps.setLong(2, products.product_price);
                     ps.setLong(3, products.discount);
-                    ps.setInt(4, Integer.parseInt(text_id_produk.getText()));
+                    ps.setInt(4, Login.GetIdUser());
+                    ps.setInt(5, Integer.parseInt(text_id_produk.getText()));
                     ps.executeUpdate();
                     refreshTable();
                     btn_perbarui.setEnabled(false);
@@ -161,10 +167,12 @@ public class Produk {
     }
 
     public void refreshTable() {
+        Login.frame.setVisible(false);
         // Clear table before refreshing
         model.setRowCount(0);
         try {
-            this.ps = conn.getCon().prepareStatement("SELECT * FROM products;");
+            this.ps = conn.getCon().prepareStatement("SELECT * FROM products WHERE id_user = ?;");
+            ps.setInt(1, Login.GetIdUser());
             this.rs = this.ps.executeQuery();
             while (rs.next()) {
                 Object[] columns = {

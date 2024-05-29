@@ -25,6 +25,8 @@ public class Login {
     private ResultSet rs;
     koneksi conn = new koneksi();
 
+    private static int idUser;
+
     public Login() {
         frame = new JFrame("Login");
         frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -44,7 +46,7 @@ public class Login {
             public void actionPerformed(ActionEvent evt) {
                 user u = new user();
                 try {
-                    Login.this.ps = conn.getCon().prepareStatement("SELECT password FROM users WHERE " +
+                    Login.this.ps = conn.getCon().prepareStatement("SELECT id_user, password FROM users WHERE " +
                             "username = ?;");
                     Login.this.ps.setString(1, u.username);
                     Login.this.rs = Login.this.ps.executeQuery();
@@ -58,6 +60,10 @@ public class Login {
                             Login.frame.setVisible(false);
                             transaction.btn_logout.setEnabled(true);
                             transaction.btn_produk.setEnabled(true);
+
+                            // Save id_user for usage in other forms
+                            int id_user = rs.getInt("id_user");
+                            SetIdUser(id_user);
 
                             // Close Database Connection
                             if (rs != null) {
@@ -107,6 +113,14 @@ public class Login {
         } catch (Exception e) {
         }
         return null;
+    }
+
+    private void SetIdUser(int id_user){
+        idUser = id_user;
+    }
+
+    public static int GetIdUser(){
+        return idUser;
     }
 
     class user {

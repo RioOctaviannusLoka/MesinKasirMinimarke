@@ -70,7 +70,7 @@ public class SignUp {
                             JOptionPane.showMessageDialog(null, "Akun berhasil dibuat!!!");
 
                             Login login = new Login();
-                            Login.frame.setVisible(true);
+                            login.frame.setVisible(true);
                             SignUp.frame.setVisible(false);
 
                             // Close database connection
@@ -85,7 +85,6 @@ public class SignUp {
                                 } catch (SQLException e) { /* Ignored */}
                             }
                             conn.close();
-                            // TODO: Watch Out for SQL INJECTION
                         }
                     }
                 } catch (Exception e) {
@@ -96,9 +95,8 @@ public class SignUp {
         btn_login.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Login login = new Login();
                 SignUp.frame.setVisible(false);
-                login.frame.setVisible(true);
+                Login.frame.setVisible(true);
             }
         });
     }
