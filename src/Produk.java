@@ -68,10 +68,10 @@ public class Produk {
         btn_tambah.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                Products products = new Products();
-                if (products.product_price > products.discount) {
-                    if(products.discount <= (products.product_price * 0.5)) {
-                        try {
+                try {
+                    Products products = new Products();
+                    if (products.product_price > products.discount) {
+                        if(products.discount <= (products.product_price * 0.5)) {
                             Produk.this.ps = conn.getCon().prepareStatement("INSERT INTO products VALUES " +
                                     "(?, ?, ?, ?, ?);");
                             ps.setInt(1, 0);
@@ -81,16 +81,16 @@ public class Produk {
                             ps.setInt(5, Login.GetIdUser());
                             ps.executeUpdate();
                             refreshTable();
-                        } catch (NumberFormatException e) {
-                            JOptionPane.showMessageDialog(null, "Harga dan Jumlah Diskon harus berupa angka.");
-                        } catch (Exception e) {
-                            JOptionPane.showMessageDialog(null, e.getMessage());
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Diskon tidak boleh lebih besar dari 50% harga produk");
                         }
                     } else {
-                        JOptionPane.showMessageDialog(null, "Diskon tidak boleh lebih besar dari 50% harga produk");
+                        JOptionPane.showMessageDialog(null, "Harga harus lebih besar dari diskon");
                     }
-                } else {
-                    JOptionPane.showMessageDialog(null, "Harga harus lebih besar dari diskon");
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "Harga dan Jumlah Diskon harus berupa angka.");
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage());
                 }
             }
         });
@@ -111,10 +111,10 @@ public class Produk {
         btn_perbarui.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                Products products = new Products();
-                if (products.product_price > products.discount) {
-                    if(products.discount <= (products.product_price * 0.5)) {
-                        try {
+                try {
+                    Products products = new Products();
+                    if (products.product_price > products.discount) {
+                        if(products.discount <= (products.product_price * 0.5)) {
                             Login.frame.setVisible(false);
                             Produk.this.ps = conn.getCon().prepareStatement("UPDATE products SET product_name = ?, "
                             + "product_price = ?, discount = ?, id_user = ? WHERE id_product = ?;");
@@ -127,16 +127,16 @@ public class Produk {
                             refreshTable();
                             btn_perbarui.setEnabled(false);
                             btn_hapus.setEnabled(false);
-                        } catch (NumberFormatException e) {
-                            JOptionPane.showMessageDialog(null, "Harga dan jumlah diskon harus berupa angka.");
-                        } catch (Exception e) {
-                            JOptionPane.showMessageDialog(null, e.getMessage());
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Diskon tidak boleh lebih besar dari 50% harga produk");
                         }
                     } else {
-                        JOptionPane.showMessageDialog(null, "Diskon tidak boleh lebih besar dari 50% harga produk");
+                        JOptionPane.showMessageDialog(null, "Harga harus lebih besar dari diskon");
                     }
-                } else {
-                    JOptionPane.showMessageDialog(null, "Harga harus lebih besar dari diskon");
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "Harga dan jumlah diskon harus berupa angka.");
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage());
                 }
             }
         });
