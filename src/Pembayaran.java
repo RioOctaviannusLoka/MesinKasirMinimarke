@@ -51,7 +51,6 @@ public class Pembayaran {
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
 
-        // TODO: Tambah tanggal di DB
         btn_batal.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
