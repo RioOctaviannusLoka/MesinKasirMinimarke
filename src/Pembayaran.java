@@ -10,7 +10,7 @@ public class Pembayaran {
     private JButton btn_batal;
     private JLabel text_total_transaksi;
     private JLabel text_total_kembalian;
-    private JFrame frame;
+    public JFrame frame;
 
     public Pembayaran(){
         frame = new JFrame("Pembayaran");

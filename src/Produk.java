@@ -63,6 +63,8 @@ public class Produk {
                 Produk.frame.setVisible(false);
                 transaksi.btn_logout.setEnabled(true);
                 transaksi.btn_produk.setEnabled(true);
+                transaksi.btn_tambah.setEnabled(true);
+                transaksi.btn_bayar.setEnabled(true);
             }
         });
         btn_tambah.addActionListener(new ActionListener() {
@@ -144,6 +146,12 @@ public class Produk {
             @Override
             public void actionPerformed(ActionEvent evt) {
                 try {
+                    // Delete related rows in the transaction table first
+                    Produk.this.ps = conn.getCon().prepareStatement("DELETE FROM transaction WHERE id_product = ?;");
+                    ps.setInt(1, Integer.parseInt(text_id_produk.getText()));
+                    ps.executeUpdate();
+
+                    // Delete products in products table
                     Produk.this.ps = conn.getCon().prepareStatement("DELETE FROM products WHERE id_product = ?;");
                     ps.setInt(1, Integer.parseInt(text_id_produk.getText()));
                     ps.executeUpdate();
@@ -152,6 +160,7 @@ public class Produk {
                     btn_hapus.setEnabled(false);
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, e.getMessage());
+                    System.out.println(e.getMessage());
                 }
             }
         });

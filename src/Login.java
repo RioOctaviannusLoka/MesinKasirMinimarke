@@ -55,15 +55,17 @@ public class Login {
                         String hashedPassword = PasswordHash(u.password);
 
                         if (password.equals(hashedPassword)){
+                            // Save id_user for usage in other forms
+                            int id_user = rs.getInt("id_user");
+                            SetIdUser(id_user);
+
                             Transaksi transaction = new Transaksi();
                             transaction.frame.setVisible(true);
                             Login.frame.setVisible(false);
                             transaction.btn_logout.setEnabled(true);
                             transaction.btn_produk.setEnabled(true);
-
-                            // Save id_user for usage in other forms
-                            int id_user = rs.getInt("id_user");
-                            SetIdUser(id_user);
+                            transaction.btn_tambah.setEnabled(true);
+                            transaction.btn_bayar.setEnabled(true);
 
                             // Close Database Connection
                             if (rs != null) {
