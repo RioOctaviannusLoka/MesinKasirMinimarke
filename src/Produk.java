@@ -167,7 +167,6 @@ public class Produk {
     }
 
     class Products {
-        int id_product;
         long product_price, discount;
         String product_name;
 
